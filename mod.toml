@@ -13,7 +13,7 @@ keep_alive = [
 
 [options]
 layout_horizontal = true # Whether 2P split screen should prefer a horizontal split
-letterboxing = true # Whether black bars should appear (true) or the res should be stretched (false)
+letterboxing = false # Whether 2P views get black bars (true) or fill each half with a wider, unstretched view (false)
 players = [
     [
         "Playable_RobinStoryDLC",
