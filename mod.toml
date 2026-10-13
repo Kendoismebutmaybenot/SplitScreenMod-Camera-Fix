@@ -13,18 +13,19 @@ keep_alive = [
 
 [options]
 layout_horizontal = true # Whether 2P split screen should prefer a horizontal split
-letterboxing = false # Whether 2P views get black bars (true) or fill each half with a wider, unstretched view (false)
+letterboxing = false # Black bars around 2P views (true) or fill each half with a wider, unstretched view (false)
+letterbox_aspect = 1.7778 # Shape of each letterboxed 2P view (1.7778 = 16:9 unstretched, 2.3333 = 21:9 slightly stretched)
 players = [
     [
-        "Playable_RobinStoryDLC",
-        "Std",
+        "Playable_Batman",
+        "Beyond",
     ],
     [
         "Playable_Catwoman",
         "Std",
     ],
     [
-        "Playable_Nightwing",
+        "Playable_RobinStoryDLC",
         "Std",
     ],
 ]

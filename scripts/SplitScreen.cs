@@ -15,6 +15,8 @@ public class SplitScreen : Script
     public TomlTable Options => (TomlTable)Mod.Config["options"];
     public bool UseHorizontalLayout => Convert.ToBoolean(Options["layout_horizontal"]);
     public bool UseLetterboxing => Convert.ToBoolean(Options["letterboxing"]);
+    public float LetterboxAspect =>
+        Options.TryGetValue("letterbox_aspect", out var aspect) ? Convert.ToSingle(aspect) : 16f / 9f;
 
     public SplitScreen()
     {
@@ -151,10 +153,18 @@ public class SplitScreen : Script
 
             if (Instance.UseLetterboxing)
             {
-                p1.Size.X = 0.5f;
-                p1.Origin.X = 0.25f;
-                p2.Size.X = 0.5f;
-                p2.Origin.X = 0.25f;
+                // Width of a box with the configured aspect at half screen height
+                var viewportSize = new Vector2();
+                self.GetViewportSize(out viewportSize);
+                var screenAspect = viewportSize.X / viewportSize.Y;
+                var width = float.IsFinite(screenAspect) && screenAspect > 0f
+                    ? Math.Clamp(Instance.LetterboxAspect * 0.5f / screenAspect, 0.1f, 1f)
+                    : 0.5f;
+
+                p1.Size.X = width;
+                p1.Origin.X = (1f - width) / 2f;
+                p2.Size.X = width;
+                p2.Origin.X = (1f - width) / 2f;
             }
             else
             {

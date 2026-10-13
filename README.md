@@ -14,7 +14,7 @@ This is an early in-development version of the split-screen mod. Several things 
 ## 🚀 Getting started
 Follow these steps to set up the mod for the first time:
 1. Install [BmSDK](https://github.com/Team-BmSDK/BmSDK-AC#-getting-started)
-2. Download the latest .zip from [here](https://github.com/etkramer/SplitScreenMod/archive/refs/heads/main.zip) and extract it into `%GameDir%\BmGame\Mods`
+2. Download the latest .zip from [here](https://github.com/Kendoismebutmaybenot/SplitScreenMod/archive/refs/heads/main.zip) and extract it into `%GameDir%\BmGame\Mods`
 3. If you've done everything right, your `Mods` folder should now have a `SplitScreenMod-main` folder inside it
 4. Done! Start the game as usual, then press "G" from the menu to add a new player
 
@@ -26,6 +26,20 @@ Like normal the first controller plugged in is used for P1 (auto-swaps with keyb
 - T: Teleport all players to P1 (if you get stuck)
 - Y: Teleport all players to P2 (if you get stuck)
 - V: Toggle ghost (if you get stuck)
+
+## ⚙️ Options
+Edit `mod.toml` in the mod folder, under `[options]`:
+
+- `layout_horizontal`: split the screen top/bottom (`true`) or side by side (`false`)
+- `letterboxing`: `false` (default) fills each half of the screen with a wider view, with no stretching. `true` adds black bars instead
+- `letterbox_aspect`: shape of each view when letterboxing is on (`1.7778` = 16:9)
+- `players`: character and suit for P2, P3 and P4, e.g. `["Playable_Batman", "Beyond"]`. Picking the same character as P1 with a different suit works too
+
+## ✨ Changes in this fork
+- No stretched views in split-screen: each player's camera uses the real shape of their half of the screen, with a wider field of view to match solo
+- Extra players can be the same character as P1 in a different suit (e.g. P2 as Batman Beyond)
+- The remote control batarang flies at its normal speed in split-screen (it was ~3x too fast because the mod turns off slow-mo)
+- Solo play is unchanged
 
 ## 🛠️ Troubleshooting
 
