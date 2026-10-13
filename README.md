@@ -1,4 +1,4 @@
-# Split-Screen Mod Camera Fix
+# Split-Screen Mod
 
 A fork of [etkramer/SplitScreenMod](https://github.com/etkramer/SplitScreenMod) that fixes stretched split-screen cameras, plus a few other fixes (see [Changes in this fork](#-changes-in-this-fork)).
 
@@ -16,8 +16,8 @@ This is an early in-development version of the split-screen mod. Several things 
 ## 🚀 Getting started
 Follow these steps to set up the mod for the first time:
 1. Install [BmSDK](https://github.com/Team-BmSDK/BmSDK-AC#-getting-started)
-2. Download the latest .zip from [here](https://github.com/Kendoismebutmaybenot/SplitScreenMod/archive/refs/heads/main.zip) and extract it into `%GameDir%\BmGame\Mods`
-3. If you've done everything right, your `Mods` folder should now have a `SplitScreenMod-main` folder inside it
+2. Download the latest .zip from [here](https://github.com/Kendoismebutmaybenot/SplitScreenMod-Camera-Fix/archive/refs/heads/main.zip) and extract it into `%GameDir%\BmGame\Mods`
+3. If you've done everything right, your `Mods` folder should now have a `SplitScreenMod-Camera-Fix-main` folder inside it
 4. Done! Start the game as usual, then press "G" from the menu to add a new player
 
 ## 🎮 Controls
@@ -38,10 +38,12 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - `players`: character and suit for P2, P3 and P4, e.g. `["Playable_Batman", "Beyond"]`. Picking the same character as P1 with a different suit works too
 
 ## ✨ Changes in this fork
-- No stretched views in split-screen: each player's camera uses the real shape of their half of the screen, with a wider field of view to match solo
-- Extra players can be the same character as P1 in a different suit (e.g. P2 as Batman Beyond)
-- The remote control batarang flies at its normal speed in split-screen (it was ~3x too fast because the mod turns off slow-mo)
-- Solo play is unchanged
+- **No more stretched split-screen.** With letterboxing off, each 2P view used to be a 16:9 image squeezed into half the screen. Now each player's camera uses the real shape of their half, with a wider field of view so it shows as much height as solo play
+- **Letterboxing is off by default**, since the full-size views no longer stretch. Turn it on with `letterboxing = true` if you prefer black bars
+- **New `letterbox_aspect` option** to set the shape of the letterboxed views
+- **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit
+- **Remote control batarang at normal speed.** The mod turns off slow-mo in split-screen so it doesn't slow the other player, which made the batarang fly about 3x too fast. Now only the batarang is slowed to its intended speed
+- **Solo play is unchanged.** All of these only apply with 2 or more players
 
 ## 🛠️ Troubleshooting
 
