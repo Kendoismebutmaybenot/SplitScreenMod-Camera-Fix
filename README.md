@@ -41,7 +41,7 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **No more stretched split-screen.** With letterboxing off, each 2P view used to be a 16:9 image squeezed into half the screen. Now each player's camera uses the real shape of their half, with a wider field of view so it shows as much height as solo play
 - **Letterboxing is off by default**, since the full-size views no longer stretch. Turn it on with `letterboxing = true` if you prefer black bars
 - **New `letterbox_aspect` option** to set the shape of the letterboxed views
-- **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit
+- **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit. This works whatever suit P1 picks (Animated, Earth One, Year One, etc.)
 - **Remote control batarang at normal speed.** The mod turns off slow-mo in split-screen so it doesn't slow the other player, which made the batarang fly about 3x too fast. Now only the batarang is slowed to its intended speed
 - **P2 can use the line launcher tightrope.** The wire only checked whether P1 was on it, so it vanished as soon as P2 flipped up onto their own line
 - **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
