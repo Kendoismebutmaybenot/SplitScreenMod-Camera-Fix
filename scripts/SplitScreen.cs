@@ -107,7 +107,49 @@ public class SplitScreen : Script
                 var cheatManager = Game.GetCheatManager();
                 cheatManager.ToggleGhost();
             }
+            else if (key == Keys.OemOpenBrackets)
+            {
+                SwapP1AndP2Controllers();
+            }
         }
+    }
+
+    // Swap which controller drives P1 and P2, so the other person becomes P1 (the
+    // player the game follows for story, cutscenes, etc.) with P1's character and screen
+    private static void SwapP1AndP2Controllers()
+    {
+        var engine = Game.GetEngine();
+        if (engine.GamePlayers.Count < 2)
+        {
+            Debug.LogWarning("No P2 to swap with");
+            return;
+        }
+
+        var p1 = engine.GamePlayers[0];
+        var p2 = engine.GamePlayers[1];
+        var p1Id = p1.ControllerId;
+        var p2Id = p2.ControllerId;
+
+        // The engine swaps IDs itself when the new one is taken; set P2 too in case it doesn't
+        p1.SetControllerId(p2Id);
+        if (p2.ControllerId != p1Id)
+        {
+            p2.SetControllerId(p1Id);
+        }
+
+        // Drop any buttons held at the moment of the swap
+        foreach (var player in new[] { p1, p2 })
+        {
+            if (player.Actor is PlayerController pc)
+            {
+                pc.PlayerInput?.ResetInput();
+                pc.ResetPlayerMovementInput();
+            }
+        }
+
+        Debug.Log(
+            $"Swapped controllers: P1 now pad {p1.ControllerId} (was {p1Id}), P2 now pad {p2.ControllerId} (was {p2Id})"
+        );
     }
 
     // Ensure correct split type is used
