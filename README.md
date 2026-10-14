@@ -44,6 +44,8 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit
 - **Remote control batarang at normal speed.** The mod turns off slow-mo in split-screen so it doesn't slow the other player, which made the batarang fly about 3x too fast. Now only the batarang is slowed to its intended speed
 - **P2 can use the line launcher tightrope.** The wire only checked whether P1 was on it, so it vanished as soon as P2 flipped up onto their own line
+- **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
+- **P2 no longer gets stuck after cutscenes.** The game only unlocked P1's controls when a cutscene ended. Now any player still locked is freed, and brought to P1 if the cutscene moved P1 far away
 - **Solo play is unchanged.** All of these only apply with 2 or more players
 
 ## 🛠️ Troubleshooting
