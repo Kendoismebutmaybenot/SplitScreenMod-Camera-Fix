@@ -109,47 +109,63 @@ public class SplitScreen : Script
             }
             else if (key == Keys.OemOpenBrackets)
             {
-                SwapP1AndP2Controllers();
+                RotateControllers();
             }
         }
     }
 
-    // Swap which controller drives P1 and P2, so the other person becomes P1 (the
-    // player the game follows for story, cutscenes, etc.) with P1's character and screen
-    private static void SwapP1AndP2Controllers()
+    // Move every controller up one screen (P2's to P1, P3's to P2... P1's to the last
+    // player), so the next person becomes P1 (the player the game follows for story,
+    // cutscenes, etc.) with P1's character and screen. With 2 players it's a swap.
+    private static void RotateControllers()
     {
         var engine = Game.GetEngine();
-        if (engine.GamePlayers.Count < 2)
+        var count = engine.GamePlayers.Count;
+        if (count < 2)
         {
-            Debug.LogWarning("No P2 to swap with");
+            Debug.LogWarning("No other players to swap with");
             return;
         }
 
-        var p1 = engine.GamePlayers[0];
-        var p2 = engine.GamePlayers[1];
-        var p1Id = p1.ControllerId;
-        var p2Id = p2.ControllerId;
-
-        // The engine swaps IDs itself when the new one is taken; set P2 too in case it doesn't
-        p1.SetControllerId(p2Id);
-        if (p2.ControllerId != p1Id)
+        var before = new int[count];
+        for (var i = 0; i < count; i++)
         {
-            p2.SetControllerId(p1Id);
+            before[i] = engine.GamePlayers[i].ControllerId;
+        }
+
+        // Swapping each neighbouring pair in turn rotates them all by one
+        for (var i = 0; i < count - 1; i++)
+        {
+            SwapControllers(engine.GamePlayers[i], engine.GamePlayers[i + 1]);
         }
 
         // Drop any buttons held at the moment of the swap
-        foreach (var player in new[] { p1, p2 })
+        var summary = "";
+        for (var i = 0; i < count; i++)
         {
+            var player = engine.GamePlayers[i];
             if (player.Actor is PlayerController pc)
             {
                 pc.PlayerInput?.ResetInput();
                 pc.ResetPlayerMovementInput();
             }
+            summary += $"P{i + 1} pad {before[i]}->{player.ControllerId} ";
         }
 
-        Debug.Log(
-            $"Swapped controllers: P1 now pad {p1.ControllerId} (was {p1Id}), P2 now pad {p2.ControllerId} (was {p2Id})"
-        );
+        Debug.Log($"Rotated controllers: {summary}");
+    }
+
+    private static void SwapControllers(LocalPlayer a, LocalPlayer b)
+    {
+        var aId = a.ControllerId;
+        var bId = b.ControllerId;
+
+        // The engine swaps IDs itself when the new one is taken; set b too in case it doesn't
+        a.SetControllerId(bId);
+        if (b.ControllerId != aId)
+        {
+            b.SetControllerId(aId);
+        }
     }
 
     // Ensure correct split type is used
