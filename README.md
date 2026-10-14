@@ -47,6 +47,7 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **P2 can use the line launcher tightrope.** The wire only checked whether P1 was on it, so it vanished as soon as P2 flipped up onto their own line
 - **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
 - **P2 no longer gets stuck after cutscenes.** The game only unlocked P1's controls when a cutscene ended. Now any player still locked is freed, and brought to P1 if the cutscene moved P1 far away
+- **Gadget icons for other characters.** P2's gadget bar used P1's icon set, so e.g. Robin as P2 had red question marks instead of gadget icons. Now each player gets their own character's icons
 - **Swap P1 and P2 mid-game** with the `[` key. The game follows P1 for the story and cutscenes, so this lets either person take the lead without restarting
 - **Solo play is unchanged.** All of these only apply with 2 or more players
 
