@@ -120,6 +120,14 @@ public class SplitScreenCharacterPicker : Script
 
             foreach (var name in names)
             {
+                // Playable_X_Std_1.. are the story's battle-damaged suits of character X
+                var damaged = Regex.Match(name, @"^(.+)_(Std_\d+)$", RegexOptions.IgnoreCase);
+                if (damaged.Success && names.Contains(damaged.Groups[1].Value))
+                {
+                    choices.Add((damaged.Groups[1].Value, damaged.Groups[2].Value));
+                    continue;
+                }
+
                 var character = names
                     .Where(b => name.StartsWith(b + "_", StringComparison.OrdinalIgnoreCase))
                     .OrderByDescending(b => b.Length)
@@ -129,9 +137,9 @@ public class SplitScreenCharacterPicker : Script
                     continue;
                 }
 
-                // Std_1..Std_8 are the story's battle-damaged versions
+                // A suit's package (e.g. Playable_Batman_Std) isn't a character of its own
                 var suit = name[(character.Length + 1)..];
-                if (Regex.IsMatch(suit, @"^Std_\d+$"))
+                if (character.EndsWith("_Std", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
@@ -154,7 +162,11 @@ public class SplitScreenCharacterPicker : Script
                 return order < 0 ? s_characterOrder.Length : order;
             })
             .ThenBy(c => c.Character)
-            .ThenBy(c => c.Suit.Equals("Std", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+            .ThenBy(c =>
+                c.Suit.Equals("Std", StringComparison.OrdinalIgnoreCase) ? 0
+                : c.Suit.StartsWith("Std_", StringComparison.OrdinalIgnoreCase) ? 2
+                : 1
+            )
             .ThenBy(c => c.Suit)
             .ToList();
     }
@@ -201,8 +213,9 @@ public class SplitScreenCharacterPicker : Script
             "Robin" => "Robin (challenge maps)",
             var other => other,
         };
-        var suit = choice.Suit.Equals("Std", StringComparison.OrdinalIgnoreCase)
-            ? "Default"
+        var suit =
+            choice.Suit.Equals("Std", StringComparison.OrdinalIgnoreCase) ? "Default"
+            : choice.Suit.StartsWith("Std_", StringComparison.OrdinalIgnoreCase) ? $"Battle damaged {choice.Suit[4..]}"
             : choice.Suit.Replace('_', ' ');
         return $"{character} - {suit}";
     }

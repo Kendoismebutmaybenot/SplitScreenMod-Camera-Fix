@@ -52,8 +52,9 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
 - **P2 no longer gets stuck after cutscenes.** The game only unlocked P1's controls when a cutscene ended. Now any player still locked is freed, and brought to P1 if the cutscene moved P1 far away
 - **Gadget icons for other characters.** P2's gadget bar used P1's icon set, so e.g. Robin as P2 had red question marks instead of gadget icons. Now each player gets their own character's icons
+- **Robin gets grapnel boost and dive bomb in co-op** whenever Batman (P1) has those upgrades. Robin has his own upgrade list without them, so he couldn't use either. Nightwing and Catwoman are left alone, since their grapple gets stuck with the boost
 - **Swap who is P1 mid-game** with the `[` key, for 2 to 4 players. The game follows P1 for the story and cutscenes, so this lets anyone take the lead without restarting
-- **Pick P2-P4's characters from the main menu** with C / V / B, instead of editing `mod.toml`. Cycles through every installed character and suit, shows the pick on screen and saves it
+- **Pick P2-P4's characters from the main menu** with C / V / B, instead of editing `mod.toml`. Cycles through every installed character and suit (including the story's battle-damaged Batman and Catwoman suits), shows the pick on screen and saves it
 - **Solo play is unchanged.** All of these only apply with 2 or more players
 
 ## 🛠️ Troubleshooting
