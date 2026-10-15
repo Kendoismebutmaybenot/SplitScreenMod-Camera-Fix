@@ -47,6 +47,7 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **Letterboxing is off by default**, since the full-size views no longer stretch. Turn it on with `letterboxing = true` if you prefer black bars
 - **New `letterbox_aspect` option** to set the shape of the letterboxed views
 - **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit. This works whatever suit P1 picks (Animated, Earth One, Year One, etc.)
+- **P2 keeps their suit when switching between Batman and Catwoman** after the story. The switch reloaded P2 in their character's default suit (e.g. plain Batman instead of Batman Beyond)
 - **Remote control batarang at normal speed.** The mod turns off slow-mo in split-screen so it doesn't slow the other player, which made the batarang fly about 3x too fast. Now only the batarang is slowed to its intended speed
 - **Remote control batarang follows P1's invert setting.** Extra players don't load P1's options, so their batarang always flew inverted, even with the option off
 - **P2 can use the line launcher tightrope.** The wire only checked whether P1 was on it, so it vanished as soon as P2 flipped up onto their own line
