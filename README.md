@@ -60,7 +60,7 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **P2's camera unsticks itself.** If P2's camera gets left behind (e.g. stuck on a cutscene camera or showing water after leaving a building) while P2 walks around, it snaps back to P2
 - **Gadget icons for other characters.** P2's gadget bar used P1's icon set, so e.g. Robin as P2 had red question marks instead of gadget icons. Now each player gets their own character's icons
 - **Robin gets grapnel boost and dive bomb in co-op** whenever Batman (P1) has those upgrades. Robin has his own upgrade list without them, so he couldn't use either. Nightwing and Catwoman are left alone, since their grapple gets stuck with the boost
-- **Sound works when the players split up.** The game only listened from one player, so once the players were far apart the other player's punches, gunshots and surroundings went silent. Now every player has their own listener (Steam version)
+- **Sound works when the players split up.** The game only listened from one player, so once the players were far apart the other player's punches, gunshots and surroundings went silent. Now every player has their own listener
 - **Swap who is P1 mid-game** with the `[` key, for 2 to 4 players. The game follows P1 for the story and cutscenes, so this lets anyone take the lead without restarting
 - **Pick P2-P4's characters from the main menu** with C / V / B, instead of editing `mod.toml`. Cycles through every installed character and suit (including the story's battle-damaged Batman and Catwoman suits), shows the pick on screen and saves it
 - **Solo play is unchanged.** All of these only apply with 2 or more players
