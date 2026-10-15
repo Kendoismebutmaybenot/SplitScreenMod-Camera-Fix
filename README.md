@@ -24,7 +24,7 @@ Like normal the first controller plugged in is used for P1 (auto-swaps with keyb
 At the main menu:
 - G: Add a player
 - O: Remove a player
-- C / V / B: Cycle P2's / P3's / P4's character and suit (shows the pick on screen and saves it to `mod.toml`)
+- (DO BEFORE ADDING PLAYER) C / V / B: Cycle P2's / P3's / P4's character and suit (shows the pick on screen and saves it to `mod.toml`)
 
 In game:
 - T: Teleport all players to P1 (if you get stuck)
