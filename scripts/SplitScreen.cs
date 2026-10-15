@@ -15,6 +15,8 @@ public class SplitScreen : Script
     public TomlTable Options => (TomlTable)Mod.Config["options"];
     public bool UseHorizontalLayout => Convert.ToBoolean(Options["layout_horizontal"]);
     public bool UseLetterboxing => Convert.ToBoolean(Options["letterboxing"]);
+    public float LetterboxAspect =>
+        Options.TryGetValue("letterbox_aspect", out var aspect) ? Convert.ToSingle(aspect) : 16f / 9f;
 
     public SplitScreen()
     {
@@ -105,7 +107,54 @@ public class SplitScreen : Script
                 var cheatManager = Game.GetCheatManager();
                 cheatManager.ToggleGhost();
             }
+            else if (key == Keys.OemOpenBrackets)
+            {
+                RotateControllers();
+            }
         }
+    }
+
+    // Move every controller up one screen (P2's to P1, P3's to P2... P1's to the last
+    // player), so the next person becomes P1 (the player the game follows for story,
+    // cutscenes, etc.) with P1's character and screen. With 2 players it's a swap.
+    private static void RotateControllers()
+    {
+        var engine = Game.GetEngine();
+        var count = engine.GamePlayers.Count;
+        if (count < 2)
+        {
+            Debug.LogWarning("No other players to swap with");
+            return;
+        }
+
+        var before = new int[count];
+        for (var i = 0; i < count; i++)
+        {
+            before[i] = engine.GamePlayers[i].ControllerId;
+        }
+
+        // Same as the engine's SSSwapControllers debug command (compiled out of the game)
+        var first = engine.GamePlayers[0].ControllerId;
+        for (var i = 0; i < count - 1; i++)
+        {
+            engine.GamePlayers[i].ControllerId = engine.GamePlayers[i + 1].ControllerId;
+        }
+        engine.GamePlayers[count - 1].ControllerId = first;
+
+        // Drop any buttons held at the moment of the swap
+        var summary = "";
+        for (var i = 0; i < count; i++)
+        {
+            var player = engine.GamePlayers[i];
+            if (player.Actor is PlayerController pc)
+            {
+                pc.PlayerInput?.ResetInput();
+                pc.ResetPlayerMovementInput();
+            }
+            summary += $"P{i + 1} pad {before[i]}->{player.ControllerId} ";
+        }
+
+        Debug.Log($"Rotated controllers: {summary}");
     }
 
     // Ensure correct split type is used
@@ -151,10 +200,18 @@ public class SplitScreen : Script
 
             if (Instance.UseLetterboxing)
             {
-                p1.Size.X = 0.5f;
-                p1.Origin.X = 0.25f;
-                p2.Size.X = 0.5f;
-                p2.Origin.X = 0.25f;
+                // Width of a box with the configured aspect at half screen height
+                var viewportSize = new Vector2();
+                self.GetViewportSize(out viewportSize);
+                var screenAspect = viewportSize.X / viewportSize.Y;
+                var width = float.IsFinite(screenAspect) && screenAspect > 0f
+                    ? Math.Clamp(Instance.LetterboxAspect * 0.5f / screenAspect, 0.1f, 1f)
+                    : 0.5f;
+
+                p1.Size.X = width;
+                p1.Origin.X = (1f - width) / 2f;
+                p2.Size.X = width;
+                p2.Origin.X = (1f - width) / 2f;
             }
             else
             {

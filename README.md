@@ -21,11 +21,24 @@ Follow these steps to set up the mod for the first time:
 ## 🎮 Controls
 Like normal the first controller plugged in is used for P1 (auto-swaps with keyboard/mouse), so P2 needs a second controller.
 
+At the main menu:
 - G: Add a player
 - O: Remove a player
+- (DO BEFORE ADDING PLAYER) C / V / B: Cycle P2's / P3's / P4's character and suit (shows the pick on screen and saves it to `mod.toml`)
+
+In game:
 - T: Teleport all players to P1 (if you get stuck)
 - Y: Teleport all players to P2 (if you get stuck)
 - V: Toggle ghost (if you get stuck)
+- `[` (left bracket): Swap who is P1 mid-game. Every controller moves up one screen (P2's to P1, P3's to P2... P1's to the last player), so the next person takes over P1's character and screen. With 2 players it simply swaps P1 and P2
+
+## ⚙️ Options
+Edit `mod.toml` in the mod folder, under `[options]`:
+
+- `layout_horizontal`: split the screen top/bottom (`true`) or side by side (`false`)
+- `letterboxing`: `false` (default) fills each half of the screen with a wider view, with no stretching. `true` adds black bars instead
+- `letterbox_aspect`: shape of each view when letterboxing is on (`1.7778` = 16:9)
+- `players`: character and suit for P2, P3 and P4, e.g. `["Playable_Batman", "Beyond"]`. Picking the same character as P1 with a different suit works too. You can also pick these from the main menu with C / V / B
 
 ## 🛠️ Troubleshooting
 
