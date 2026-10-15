@@ -53,7 +53,6 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
 - **P2 no longer gets stuck after cutscenes.** The game only unlocked P1's controls when a cutscene ended. Now any player still locked is freed, and brought to P1 if the cutscene moved P1 far away
 - **The final boss is playable in co-op.** At the Monarch Theatre the game hands the player a special "Batman with sword" character, and P2 took it away from P1, which was an instant game over (and a black screen after the cutscene). Now P2 keeps their own character. Extra players are also saved instead of dying if they're squashed by P1 or a scene, fall out of the world, or are left far behind
-- **No more stuck black screen after dying in co-op.** Whichever player dies, you get the normal game over and checkpoint retry
 - **Clayface's mud men go after P2 too** in the final fight, instead of only chasing P1
 - **P2's camera unsticks itself.** If P2's camera gets left behind (e.g. stuck on a cutscene camera or showing water after leaving a building) while P2 walks around, it snaps back to P2
 - **Gadget icons for other characters.** P2's gadget bar used P1's icon set, so e.g. Robin as P2 had red question marks instead of gadget icons. Now each player gets their own character's icons
