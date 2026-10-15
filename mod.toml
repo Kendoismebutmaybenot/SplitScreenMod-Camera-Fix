@@ -17,15 +17,15 @@ letterboxing = false # Black bars around 2P views (true) or fill each half with 
 letterbox_aspect = 1.7778 # Shape of each letterboxed 2P view (1.7778 = 16:9 unstretched, 2.3333 = 21:9 slightly stretched)
 players = [
     [
-        "Playable_Batman",
-        "Beyond",
+        "Playable_RobinStoryDLC",
+        "Std",
     ],
     [
         "Playable_Catwoman",
         "Std",
     ],
     [
-        "Playable_RobinStoryDLC",
+        "Playable_Nightwing",
         "Std",
     ],
 ]

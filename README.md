@@ -1,7 +1,5 @@
 # Split-Screen Mod
 
-A fork of [etkramer/SplitScreenMod](https://github.com/etkramer/SplitScreenMod) that fixes stretched split-screen cameras, plus a few other fixes (see [Changes in this fork](#-changes-in-this-fork)).
-
 <img width="910" height="512" alt="image2" src="https://github.com/user-attachments/assets/6c79721c-43c1-4f48-bd84-215023368ea3" />
 
 ## 📖 About
@@ -16,8 +14,8 @@ This is an early in-development version of the split-screen mod. Several things 
 ## 🚀 Getting started
 Follow these steps to set up the mod for the first time:
 1. Install [BmSDK](https://github.com/Team-BmSDK/BmSDK-AC#-getting-started)
-2. Download the latest .zip from [here](https://github.com/Kendoismebutmaybenot/SplitScreenMod-fixes/archive/refs/heads/main.zip) and extract it into `%GameDir%\BmGame\Mods`
-3. If you've done everything right, your `Mods` folder should now have a `SplitScreenMod-fixes-main` folder inside it
+2. Download the latest .zip from [here](https://github.com/etkramer/SplitScreenMod/archive/refs/heads/main.zip) and extract it into `%GameDir%\BmGame\Mods`
+3. If you've done everything right, your `Mods` folder should now have a `SplitScreenMod-main` folder inside it
 4. Done! Start the game as usual, then press "G" from the menu to add a new player
 
 ## 🎮 Controls
@@ -41,25 +39,6 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - `letterboxing`: `false` (default) fills each half of the screen with a wider view, with no stretching. `true` adds black bars instead
 - `letterbox_aspect`: shape of each view when letterboxing is on (`1.7778` = 16:9)
 - `players`: character and suit for P2, P3 and P4, e.g. `["Playable_Batman", "Beyond"]`. Picking the same character as P1 with a different suit works too. You can also pick these from the main menu with C / V / B
-
-## ✨ Changes in this fork
-- **No more stretched split-screen.** With letterboxing off, each 2P view used to be a 16:9 image squeezed into half the screen. Now each player's camera uses the real shape of their half, with a wider field of view so it shows as much height as solo play
-- **Letterboxing is off by default**, since the full-size views no longer stretch. Turn it on with `letterboxing = true` if you prefer black bars
-- **New `letterbox_aspect` option** to set the shape of the letterboxed views
-- **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit. This works whatever suit P1 picks (Animated, Earth One, Year One, etc.)
-- **Remote control batarang at normal speed.** The mod turns off slow-mo in split-screen so it doesn't slow the other player, which made the batarang fly about 3x too fast. Now only the batarang is slowed to its intended speed
-- **Remote control batarang follows P1's invert setting.** Extra players don't load P1's options, so their batarang always flew inverted, even with the option off
-- **P2 can use the line launcher tightrope.** The wire only checked whether P1 was on it, so it vanished as soon as P2 flipped up onto their own line
-- **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
-- **P2 no longer gets stuck after cutscenes.** The game only unlocked P1's controls when a cutscene ended. Now any player still locked is freed, and brought to P1 if the cutscene moved P1 far away
-- **The final boss is playable in co-op.** At the Monarch Theatre the game hands the player a special "Batman with sword" character, and P2 took it away from P1, which was an instant game over (and a black screen after the cutscene). Now P2 keeps their own character. Extra players are also saved instead of dying if they're squashed by P1 or a scene, fall out of the world, or are left far behind
-- **Clayface's mud men go after P2 too** in the final fight, instead of only chasing P1
-- **P2's camera unsticks itself.** If P2's camera gets left behind (e.g. stuck on a cutscene camera or showing water after leaving a building) while P2 walks around, it snaps back to P2
-- **Gadget icons for other characters.** P2's gadget bar used P1's icon set, so e.g. Robin as P2 had red question marks instead of gadget icons. Now each player gets their own character's icons
-- **Robin gets grapnel boost and dive bomb in co-op** whenever Batman (P1) has those upgrades. Robin has his own upgrade list without them, so he couldn't use either. Nightwing and Catwoman are left alone, since their grapple gets stuck with the boost
-- **Swap who is P1 mid-game** with the `[` key, for 2 to 4 players. The game follows P1 for the story and cutscenes, so this lets anyone take the lead without restarting
-- **Pick P2-P4's characters from the main menu** with C / V / B, instead of editing `mod.toml`. Cycles through every installed character and suit (including the story's battle-damaged Batman and Catwoman suits), shows the pick on screen and saves it
-- **Solo play is unchanged.** All of these only apply with 2 or more players
 
 ## 🛠️ Troubleshooting
 
