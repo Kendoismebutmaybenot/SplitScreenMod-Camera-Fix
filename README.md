@@ -2,6 +2,8 @@
 
 A fork of [etkramer/SplitScreenMod](https://github.com/etkramer/SplitScreenMod) that fixes stretched split-screen cameras, plus a few other fixes (see [Changes in this fork](#-changes-in-this-fork)).
 
+> **All of these fixes have been merged into the original mod** ([etkramer/SplitScreenMod#21](https://github.com/etkramer/SplitScreenMod/pull/21)), so you can also download them from [etkramer/SplitScreenMod](https://github.com/etkramer/SplitScreenMod).
+
 <img width="910" height="512" alt="image2" src="https://github.com/user-attachments/assets/6c79721c-43c1-4f48-bd84-215023368ea3" />
 
 ## 📖 About
