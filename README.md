@@ -48,6 +48,7 @@ Edit `mod.toml` in the mod folder, under `[options]`:
 - **New `letterbox_aspect` option** to set the shape of the letterboxed views
 - **Same character, different suit.** Extra players can be the same character as P1 in another suit (e.g. P2 as Batman Beyond). Before, they always got P1's suit. This works whatever suit P1 picks (Animated, Earth One, Year One, etc.)
 - **Remote control batarang at normal speed.** The mod turns off slow-mo in split-screen so it doesn't slow the other player, which made the batarang fly about 3x too fast. Now only the batarang is slowed to its intended speed
+- **Remote control batarang follows P1's invert setting.** Extra players don't load P1's options, so their batarang always flew inverted, even with the option off
 - **P2 can use the line launcher tightrope.** The wire only checked whether P1 was on it, so it vanished as soon as P2 flipped up onto their own line
 - **P2 can crack codes with the cryptographic sequencer.** It used P1's sticks and only gave codes to P1, so P2 could open it but never crack anything
 - **P2 no longer gets stuck after cutscenes.** The game only unlocked P1's controls when a cutscene ended. Now any player still locked is freed, and brought to P1 if the cutscene moved P1 far away
