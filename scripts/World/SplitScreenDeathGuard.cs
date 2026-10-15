@@ -9,16 +9,13 @@ namespace Etkramer.SplitScreen.World;
 // Monarch Theatre), an extra player can be squashed by P1 or the scene, or left in
 // a part of the map that's no longer loaded and fall out of the world, and their
 // death is a game over for everyone. In co-op, players no longer kill each other by
-// overlapping, and an extra player who would die during a cutscene, by falling out
-// of the world, or far from P1 is healed and brought to P1 instead. Any other death
+// overlapping, and an extra player who would die during a cutscene or by falling out
+// of the world is healed and brought to P1 instead. Any other death
 // of an extra player is a game over through P1. Every player death and game over is
 // logged with its cause. Solo is untouched.
 [Script]
 public class SplitScreenDeathGuard : Script
 {
-    // Further than this from P1 counts as left behind
-    const float MaxDistance = 5000f;
-
     [Redirect(typeof(RPawnPlayer), nameof(RPawnPlayer.Died), AllowSubtypes = true)]
     private static bool DiedRedirect(RPawnPlayer self, Controller killer, Class damageType, Vector3 hitLocation)
     {
@@ -280,11 +277,6 @@ public class SplitScreenDeathGuard : Script
             if (p1.bCinematicMode || p1.bForceCinematicMode || p1.IsMatineePlaing())
             {
                 return "P1 is in a cutscene";
-            }
-
-            if (p1.Pawn != null && Vector3.Distance(pawn.Location, p1.Pawn.Location) > MaxDistance)
-            {
-                return "far from P1";
             }
         }
 
