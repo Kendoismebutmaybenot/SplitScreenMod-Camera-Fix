@@ -133,11 +133,13 @@ public class SplitScreen : Script
             before[i] = engine.GamePlayers[i].ControllerId;
         }
 
-        // Swapping each neighbouring pair in turn rotates them all by one
+        // Same as the engine's SSSwapControllers debug command (compiled out of the game)
+        var first = engine.GamePlayers[0].ControllerId;
         for (var i = 0; i < count - 1; i++)
         {
-            SwapControllers(engine.GamePlayers[i], engine.GamePlayers[i + 1]);
+            engine.GamePlayers[i].ControllerId = engine.GamePlayers[i + 1].ControllerId;
         }
+        engine.GamePlayers[count - 1].ControllerId = first;
 
         // Drop any buttons held at the moment of the swap
         var summary = "";
@@ -153,19 +155,6 @@ public class SplitScreen : Script
         }
 
         Debug.Log($"Rotated controllers: {summary}");
-    }
-
-    private static void SwapControllers(LocalPlayer a, LocalPlayer b)
-    {
-        var aId = a.ControllerId;
-        var bId = b.ControllerId;
-
-        // The engine swaps IDs itself when the new one is taken; set b too in case it doesn't
-        a.SetControllerId(bId);
-        if (b.ControllerId != aId)
-        {
-            b.SetControllerId(aId);
-        }
     }
 
     // Ensure correct split type is used
