@@ -88,6 +88,19 @@ public class SplitScreenSkin : Script
         var gri = Game.GetGameRI();
         if (suitData == null || gri == null)
         {
+            // Different character from P1 (e.g. P1 switched to Catwoman after the
+            // story): the game reads this player's own slot, so make sure it holds
+            // their suit and not the default one
+            var ownSuit = OwnSlotSuit(self, out var ownIndex);
+            if (ownSuit != null && gri != null && gri.PlayerCharacters[ownIndex].MeshData != ownSuit)
+            {
+                var slot = gri.PlayerCharacters[ownIndex];
+                var previous = slot.MeshData?.Name.ToString() ?? "none";
+                slot.MeshData = ownSuit;
+                gri.PlayerCharacters[ownIndex] = slot;
+                Debug.Log($"SplitScreenSkin: P{ownIndex + 1} slot had {previous}, set to {ownSuit.Name} before building");
+            }
+
             self.SetupPlayerMesh(bParam);
             return;
         }
@@ -138,8 +151,113 @@ public class SplitScreenSkin : Script
             }
             MeshData = suitData;
         }
+        else if (suitData == null && MeshData != null)
+        {
+            // Different character from P1: the game can still put another suit of this
+            // player's own character on them (e.g. Batman's default suit after switching
+            // P1 to Catwoman). Keep the suit they picked.
+            var ownSuit = OwnSlotSuit(self, out var ownIndex);
+            if (
+                ownSuit != null
+                && !ReferenceEquals(MeshData, ownSuit)
+                && MeshData.Name.ToString().StartsWith(OwnCharacter(ownIndex) + "_", StringComparison.OrdinalIgnoreCase)
+            )
+            {
+                if (s_logged.Add($"own{ownIndex}:{MeshData.Name}"))
+                {
+                    Debug.Log($"SplitScreenSkin: kept P{ownIndex + 1} as {ownSuit.Name} (game tried {MeshData.Name})");
+                }
+                MeshData = ownSuit;
+            }
+        }
 
         self.ApplyMeshData(MeshData, InPlay);
+    }
+
+    // Log what the game puts in the character slots when it (re)loads them, e.g.
+    // when switching between Batman and Catwoman after the story
+    [Redirect(typeof(RGameRI), nameof(RGameRI.ReallyLoadPlayableCharacters))]
+    private static void ReallyLoadPlayableCharactersRedirect(RGameRI self)
+    {
+        if (GameState.IsMultiplayer())
+        {
+            Debug.Log($"SplitScreenSkin: loading characters, slots before: {DescribeSlots(self)}");
+        }
+
+        self.ReallyLoadPlayableCharacters();
+
+        if (GameState.IsMultiplayer())
+        {
+            Debug.Log($"SplitScreenSkin: slots after: {DescribeSlots(self)}");
+        }
+    }
+
+    [Redirect(typeof(RPlayerController), nameof(RPlayerController.PrepareForPlayerSwitch), AllowSubtypes = true)]
+    private static void PrepareForPlayerSwitchRedirect(RPlayerController self)
+    {
+        if (GameState.IsMultiplayer() && Game.GetGameRI() is RGameRI gri)
+        {
+            Debug.Log($"SplitScreenSkin: player switch, slots: {DescribeSlots(gri)}");
+        }
+
+        self.PrepareForPlayerSwitch();
+    }
+
+    private static string DescribeSlots(RGameRI gri)
+    {
+        var parts = new List<string>();
+        for (var i = 0; i < 4 && i < gri.PlayerCharacters.Count; i++)
+        {
+            var slot = gri.PlayerCharacters[i];
+            parts.Add($"[{i}] {slot.CharacterName}/{slot.MeshName}/{slot.MeshData?.Name.ToString() ?? "none"}");
+        }
+        return string.Join(" ", parts);
+    }
+
+    // Character an extra player picked in mod.toml, or "" if none
+    private static string OwnCharacter(int index)
+    {
+        var playerConfigs = (TomlArray)SplitScreen.Instance.Options["players"];
+        return index > 0 && index - 1 < playerConfigs.Count
+            ? (string)((TomlArray)playerConfigs[index - 1]!)[0]!
+            : "";
+    }
+
+    // The suit an extra player picked, when they're a different character from P1
+    // and their own slot is still the character they picked. Null otherwise.
+    private static RAddContentPlayerCharacterMesh? OwnSlotSuit(RPawnPlayer self, out int index)
+    {
+        index = -1;
+        if (!GameState.IsMultiplayer() || SplitScreen.Instance == null)
+        {
+            return null;
+        }
+
+        var gri = Game.GetGameRI();
+        index =
+            self.Controller != null && Game.GetGameInfo() is RGameInfo gameInfo
+                ? gameInfo.GetPlayerCharacterIndex(self.Controller)
+                : s_spawningIndex;
+
+        var playerConfigs = (TomlArray)SplitScreen.Instance.Options["players"];
+        if (gri == null || index <= 0 || index >= gri.PlayerCharacters.Count || index - 1 >= playerConfigs.Count)
+        {
+            return null;
+        }
+
+        var ownSlot = gri.PlayerCharacters[index];
+        var p1Slot = gri.PlayerCharacters[0];
+        var character = OwnCharacter(index);
+        if (
+            SameCharacter(ownSlot.CharacterName.ToString(), p1Slot.CharacterName.ToString())
+            || !SameCharacter(ownSlot.CharacterName.ToString(), character)
+        )
+        {
+            return null;
+        }
+
+        var playerConfig = (TomlArray)playerConfigs[index - 1]!;
+        return FindMeshData($"{character}_{(string)playerConfig[1]!}");
     }
 
     // The suit an extra player should wear when they're the same character as P1,
