@@ -10,8 +10,9 @@ namespace Etkramer.SplitScreen.World;
 // a part of the map that's no longer loaded and fall out of the world, and their
 // death is a game over for everyone. In co-op, players no longer kill each other by
 // overlapping, and an extra player who would die during a cutscene, by falling out
-// of the world, or far from P1 is healed and brought to P1 instead. Every player
-// death and game over is logged with its cause. Solo is untouched.
+// of the world, or far from P1 is healed and brought to P1 instead. Any other death
+// of an extra player is a game over through P1. Every player death and game over is
+// logged with its cause. Solo is untouched.
 [Script]
 public class SplitScreenDeathGuard : Script
 {
@@ -34,13 +35,25 @@ public class SplitScreenDeathGuard : Script
                 + $"{Describe(self)}{(reason != null ? $"; saving them ({reason})" : "")}"
         );
 
-        if (reason == null)
+        if (reason != null)
         {
-            return self.Died(killer, damageType, hitLocation);
+            Rescue(self);
+            return false;
         }
 
-        Rescue(self);
-        return false;
+        // The game only runs the game over for P1, so an extra player's death left the
+        // screen black for good. P1 goes down with them instead, which is a normal game
+        // over and checkpoint reload.
+        if (index > 0 && Game.GetEngine().GamePlayers[0]?.Actor?.Pawn is RPawnPlayer p1Pawn && p1Pawn.Health > 0)
+        {
+            Debug.Log($"SplitScreenDeathGuard: P{index + 1} is down, game over through P1");
+            self.Health = Math.Max(1, self.Health);
+            p1Pawn.Health = 0;
+            p1Pawn.Died(killer, damageType, p1Pawn.Location);
+            return false;
+        }
+
+        return self.Died(killer, damageType, hitLocation);
     }
 
     // A player pawn moved into another (scene teleports, matinees) kills the one in the way
@@ -94,23 +107,16 @@ public class SplitScreenDeathGuard : Script
         self.OutsideWorldBounds();
     }
 
-    // A player left with no pawn at all (seen at the Monarch Theatre checkpoint) gets a
-    // game over. In co-op, give them a new pawn next to another player instead.
+    // Logging only, so a game over that isn't a death (e.g. a scripted fail) shows up
     [Redirect(typeof(RPlayerController), nameof(RPlayerController.TriggerGameOver), AllowSubtypes = true)]
     private static void TriggerGameOverRedirect(RPlayerController self)
     {
         if (GameState.IsMultiplayer())
         {
-            var index = ControllerIndex(self);
             Debug.Log(
-                $"SplitScreenDeathGuard: game over triggered on P{index + 1} (state {self.GetStateName()}, "
+                $"SplitScreenDeathGuard: game over triggered on P{ControllerIndex(self) + 1} (state {self.GetStateName()}, "
                     + $"pawn={self.Pawn?.Name.ToString() ?? "none"}); {DescribeAll()}"
             );
-
-            if (index >= 0 && self.Pawn == null && Respawn(self, index))
-            {
-                return;
-            }
         }
 
         self.TriggerGameOver();
@@ -121,13 +127,7 @@ public class SplitScreenDeathGuard : Script
     {
         if (GameState.IsMultiplayer())
         {
-            var index = ControllerIndex(self);
-            Debug.Log($"SplitScreenDeathGuard: game over movie '{movieName}' on P{index + 1}; {DescribeAll()}");
-
-            if (index >= 0 && self.Pawn == null && Respawn(self, index))
-            {
-                return;
-            }
+            Debug.Log($"SplitScreenDeathGuard: game over movie '{movieName}' on P{ControllerIndex(self) + 1}; {DescribeAll()}");
         }
 
         self.GameOver(movieName);
